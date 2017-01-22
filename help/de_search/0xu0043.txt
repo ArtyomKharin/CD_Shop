@@ -1,0 +1,5 @@
+CD; 1;
+CHOICEBOX; 5,4,3;
+CHOOSE; 5,4,3;
+CLICK; 5,4,3;
+CORNER; 5,4,3;

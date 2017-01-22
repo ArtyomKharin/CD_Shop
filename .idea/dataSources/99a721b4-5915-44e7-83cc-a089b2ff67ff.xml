@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="hibernate.cfg.xml/Hibernate">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="cdshop">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="information_schema"/>
+    <schema id="3" name="lab1"/>
+    <schema id="4" name="lab3"/>
+    <schema id="5" name="mydbtest"/>
+    <schema id="6" name="mysql"/>
+    <schema id="7" name="performance_schema"/>
+    <schema id="8" name="sakila"/>
+    <schema id="9" name="sys"/>
+    <schema id="10" name="world"/>
+    <table id="11" parent="1" name="artist"/>
+    <table id="12" parent="1" name="booking"/>
+    <table id="13" parent="1" name="booking_position"/>
+    <table id="14" parent="1" name="cd"/>
+    <table id="15" parent="1" name="consignment"/>
+    <table id="16" parent="1" name="customer"/>
+    <table id="17" parent="1" name="location"/>
+    <table id="18" parent="1" name="music_label"/>
+    <table id="19" parent="1" name="organization"/>
+    <table id="20" parent="1" name="provider"/>
+    <table id="21" parent="1" name="supply"/>
+    <table id="22" parent="1" name="user"/>
+    <column id="23" parent="11" name="Artist_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="24" parent="11" name="Name">
+      <mandatory>1</mandatory>
+      <data-type>varchar(20)|0</data-type>
+    </column>
+    <column id="25" parent="11" name="Number_of_albums">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <key id="26" parent="11" name="PRIMARY">
+      <columns>Artist_ID</columns>
+      <primary>1</primary>
+    </key>
+    <column id="27" parent="12" name="Booking_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="28" parent="12" name="Date">
+      <mandatory>1</mandatory>
+      <data-type>date|0</data-type>
+    </column>
+    <column id="29" parent="12" name="Customer_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="30" parent="12" name="Total_Price">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <default-expression>&apos;0&apos;</default-expression>
+    </column>
+    <column id="31" parent="12" name="Finished">
+      <mandatory>1</mandatory>
+      <data-type>bit(1)|0</data-type>
+      <default-expression>b&apos;0&apos;</default-expression>
+    </column>
+    <index id="32" parent="12" name="R_17">
+      <columns>Customer_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <key id="33" parent="12" name="PRIMARY">
+      <columns>Booking_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="34" parent="12" name="R_17">
+      <columns>Customer_ID</columns>
+      <ref-key>~.customer.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <column id="35" parent="13" name="Quantity">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="36" parent="13" name="Consignment_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="37" parent="13" name="Booking_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <index id="38" parent="13" name="R_42_idx">
+      <columns>Consignment_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <index id="39" parent="13" name="R_43">
+      <columns>Booking_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <key id="40" parent="13" name="PRIMARY">
+      <columns>Consignment_ID
+Booking_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="41" parent="13" name="R_42">
+      <columns>Consignment_ID</columns>
+      <ref-key>~.consignment.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <foreign-key id="42" parent="13" name="R_43">
+      <columns>Booking_ID</columns>
+      <ref-key>~.booking.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <trigger id="43" parent="13" name="booking_position_AFTER_INSERT">
+      <trig-events>I</trig-events>
+      <trig-turn>AFTER_ROW</trig-turn>
+    </trigger>
+    <trigger id="44" parent="13" name="booking_position_AFTER_UPDATE">
+      <trig-events>U</trig-events>
+      <trig-turn>AFTER_ROW</trig-turn>
+    </trigger>
+    <trigger id="45" parent="13" name="booking_position_AFTER_DELETE">
+      <trig-events>D</trig-events>
+      <trig-turn>AFTER_ROW</trig-turn>
+    </trigger>
+    <column id="46" parent="14" name="CD_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="47" parent="14" name="Album">
+      <mandatory>1</mandatory>
+      <data-type>varchar(20)|0</data-type>
+    </column>
+    <column id="48" parent="14" name="Genre">
+      <mandatory>1</mandatory>
+      <data-type>varchar(15)|0</data-type>
+    </column>
+    <column id="49" parent="14" name="Artist_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="50" parent="14" name="Organization_ID">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <index id="51" parent="14" name="R_40">
+      <columns>Artist_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <index id="52" parent="14" name="R_41">
+      <columns>Organization_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <key id="53" parent="14" name="PRIMARY">
+      <columns>CD_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="54" parent="14" name="R_40">
+      <columns>Artist_ID</columns>
+      <ref-key>~.artist.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <foreign-key id="55" parent="14" name="R_13">
+      <columns>Organization_ID</columns>
+      <ref-key>~.music_label.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>set_null</cascade-delete-rule>
+    </foreign-key>
+    <foreign-key id="56" parent="14" name="R_41">
+      <columns>Organization_ID</columns>
+      <ref-key>~.music_label.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>set_null</cascade-delete-rule>
+    </foreign-key>
+    <column id="57" parent="15" name="Consignment_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="58" parent="15" name="Quantity">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="59" parent="15" name="CD_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="60" parent="15" name="Organization_ID">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="61" parent="15" name="Price">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <index id="62" parent="15" name="R_24">
+      <columns>CD_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <index id="63" parent="15" name="R_39">
+      <columns>Organization_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <key id="64" parent="15" name="PRIMARY">
+      <columns>Consignment_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="65" parent="15" name="R_24">
+      <columns>CD_ID</columns>
+      <ref-key>~.cd.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <foreign-key id="66" parent="15" name="R_39">
+      <columns>Organization_ID</columns>
+      <ref-key>~.provider.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>set_null</cascade-delete-rule>
+    </foreign-key>
+    <column id="67" parent="16" name="Customer_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="68" parent="16" name="Name">
+      <mandatory>1</mandatory>
+      <data-type>varchar(20)|0</data-type>
+    </column>
+    <column id="69" parent="16" name="Surname">
+      <mandatory>1</mandatory>
+      <data-type>varchar(20)|0</data-type>
+    </column>
+    <column id="70" parent="16" name="Phone">
+      <mandatory>1</mandatory>
+      <data-type>char(13)|0</data-type>
+    </column>
+    <column id="71" parent="16" name="E_mail">
+      <data-type>varchar(32)|0</data-type>
+    </column>
+    <column id="72" parent="16" name="Age">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="73" parent="16" name="Location_ID">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <index id="74" parent="16" name="R_33">
+      <columns>Location_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <key id="75" parent="16" name="PRIMARY">
+      <columns>Customer_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="76" parent="16" name="R_33">
+      <columns>Location_ID</columns>
+      <ref-key>~.location.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>set_null</cascade-delete-rule>
+    </foreign-key>
+    <column id="77" parent="17" name="Location_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="78" parent="17" name="Country">
+      <mandatory>1</mandatory>
+      <data-type>varchar(20)|0</data-type>
+    </column>
+    <column id="79" parent="17" name="City">
+      <mandatory>1</mandatory>
+      <data-type>varchar(20)|0</data-type>
+    </column>
+    <column id="80" parent="17" name="Street">
+      <mandatory>1</mandatory>
+      <data-type>varchar(20)|0</data-type>
+    </column>
+    <column id="81" parent="17" name="House">
+      <mandatory>1</mandatory>
+      <data-type>varchar(10)|0</data-type>
+    </column>
+    <column id="82" parent="17" name="Post_code">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <key id="83" parent="17" name="PRIMARY">
+      <columns>Location_ID</columns>
+      <primary>1</primary>
+    </key>
+    <column id="84" parent="18" name="Organization_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="85" parent="18" name="Studio_amount">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <key id="86" parent="18" name="PRIMARY">
+      <columns>Organization_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="87" parent="18" name="R_45">
+      <columns>Organization_ID</columns>
+      <ref-key>~.organization.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <column id="88" parent="19" name="Organization_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="89" parent="19" name="Name_of_organization">
+      <data-type>varchar(30)|0</data-type>
+    </column>
+    <column id="90" parent="19" name="Phone">
+      <data-type>char(13)|0</data-type>
+    </column>
+    <column id="91" parent="19" name="E_mail">
+      <data-type>varchar(32)|0</data-type>
+    </column>
+    <key id="92" parent="19" name="PRIMARY">
+      <columns>Organization_ID</columns>
+      <primary>1</primary>
+    </key>
+    <column id="93" parent="20" name="Location_ID">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="94" parent="20" name="Organization_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="95" parent="20" name="ITN">
+      <mandatory>1</mandatory>
+      <data-type>char(12)|0</data-type>
+    </column>
+    <index id="96" parent="20" name="R_32">
+      <columns>Location_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <key id="97" parent="20" name="PRIMARY">
+      <columns>Organization_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="98" parent="20" name="R_32">
+      <columns>Location_ID</columns>
+      <ref-key>~.location.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>set_null</cascade-delete-rule>
+    </foreign-key>
+    <foreign-key id="99" parent="20" name="R_44">
+      <columns>Organization_ID</columns>
+      <ref-key>~.organization.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <column id="100" parent="21" name="Supply_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="101" parent="21" name="Date">
+      <mandatory>1</mandatory>
+      <data-type>date|0</data-type>
+    </column>
+    <column id="102" parent="21" name="Total_Price">
+      <mandatory>1</mandatory>
+      <data-type>double|0</data-type>
+    </column>
+    <column id="103" parent="21" name="Quantity">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="104" parent="21" name="Organization_ID">
+      <data-type>int(11)|0</data-type>
+    </column>
+    <column id="105" parent="21" name="CD_ID">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+    </column>
+    <index id="106" parent="21" name="R_46">
+      <columns>Organization_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <index id="107" parent="21" name="R_47">
+      <columns>CD_ID</columns>
+      <desc-columns></desc-columns>
+    </index>
+    <key id="108" parent="21" name="PRIMARY">
+      <columns>Supply_ID</columns>
+      <primary>1</primary>
+    </key>
+    <foreign-key id="109" parent="21" name="R_46">
+      <columns>Organization_ID</columns>
+      <ref-key>~.provider.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>set_null</cascade-delete-rule>
+    </foreign-key>
+    <foreign-key id="110" parent="21" name="R_47">
+      <columns>CD_ID</columns>
+      <ref-key>~.cd.PRIMARY</ref-key>
+      <cascade-update-rule>update</cascade-update-rule>
+      <cascade-delete-rule>delete</cascade-delete-rule>
+    </foreign-key>
+    <column id="111" parent="22" name="user_id">
+      <mandatory>1</mandatory>
+      <data-type>int(11)|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="112" parent="22" name="password">
+      <mandatory>1</mandatory>
+      <data-type>varchar(16)|0</data-type>
+    </column>
+    <column id="113" parent="22" name="login">
+      <mandatory>1</mandatory>
+      <data-type>varchar(16)|0</data-type>
+    </column>
+    <column id="114" parent="22" name="admin_mode">
+      <mandatory>1</mandatory>
+      <data-type>bit(1)|0</data-type>
+      <default-expression>b&apos;0&apos;</default-expression>
+    </column>
+    <index id="115" parent="22" name="login_UNIQUE">
+      <columns>login</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <key id="116" parent="22" name="PRIMARY">
+      <columns>user_id</columns>
+      <primary>1</primary>
+    </key>
+    <key id="117" parent="22" name="login_UNIQUE">
+      <columns>login</columns>
+      <underlying-index>login_UNIQUE</underlying-index>
+    </key>
+  </database-model>
+</dataSource>

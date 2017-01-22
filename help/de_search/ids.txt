@@ -1,0 +1,15 @@
+1
+ Information system for CD shop
+ information_system_for_cd_shop.htm
+2
+ How to see statistics
+ how_to_see_statistics.htm
+3
+ How to add record to table
+ how_to_add_record_to_table.htm
+4
+ How to edit record
+ how_to_edit_record.htm
+5
+ How to delete record (administrator mode)
+ how_to_delete_record__administrator_mode_.htm
