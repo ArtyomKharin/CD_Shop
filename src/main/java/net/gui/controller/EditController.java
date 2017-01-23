@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import net.gui.ChoiceWindow;
+import net.gui.ModalWindow;
 import net.gui.dao.MusicLabelDAO;
 import net.gui.models.*;
 import net.gui.services.ServiceList;
@@ -60,8 +62,32 @@ public class EditController implements Initializable {
     private TextField field7;
     @FXML
     private ChoiceBox<String> genre;
-    public static int id;
-    public static int id2;
+    public static int consID,cdID,locID,labelID,prID,artID;
+    @FXML
+    private Label consignmentLabel;
+    @FXML
+    private Button consignmentChooseButton;
+    @FXML
+    private Label locationLabel;
+    @FXML
+    private Button locationChooseButton;
+    @FXML
+    private Label artistLabel;
+    @FXML
+    private Button artistChooseButton;
+    @FXML
+    private Label musicLabel;
+    @FXML
+    private Button providerChooseButton;
+    @FXML
+    private Button labelChooseButton;
+    @FXML
+    private Label providerLabel;
+    @FXML
+    private Button cdChooseButton;
+    @FXML
+    private Label cdLabel;
+    public static int id,id2;
     public EditController(){}
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -82,8 +108,6 @@ public class EditController implements Initializable {
                 case ("Customer"):customerFill();
                     break;
                 case ("Location"):locationFill();
-                    break;
-                case ("Organizations"):organizationFill();
                     break;
                 case ("Music Label"):musicLabelFill();
                     break;
@@ -112,6 +136,20 @@ public class EditController implements Initializable {
         field6.setVisible(false);
         field7.setVisible(false);
         genre.setVisible(false);
+        consignmentLabel.setVisible(false);
+        consignmentChooseButton.setVisible(false);
+        artistLabel.setVisible(false);
+        artistChooseButton.setVisible(false);
+        musicLabel.setVisible(false);
+        labelChooseButton.setVisible(false);
+        locationLabel.setVisible(false);
+        locationChooseButton.setVisible(false);
+        providerLabel.setVisible(false);
+        providerChooseButton.setVisible(false);
+        cdLabel.setVisible(false);
+        providerLabel.setVisible(false);
+        cdChooseButton.setVisible(false);
+
     }
     public void artistFill(){
         label1.setText("Name");
@@ -150,110 +188,140 @@ public class EditController implements Initializable {
 
     }
     public void bookingFill(){
-        label1.setText("Customer_ID");
-        label1.setVisible(true);
-        field1.setVisible(true);
-        BookingEntity bookingEntity = ServiceList.bookingService.selectById(id);
-        field1.setText(String.valueOf(bookingEntity.getCustomerId()));
-        field1.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                if (field1.getText().length() > 11) {
-                    String s = field1.getText().substring(0, 11);
-                    field1.setText(s);
-                }
-                Validator.numberConstraint(field1);
-            }
-        });
-    }
-    public void bookingPositionFill() {
-        label1.setText("Consignment_ID");
-        label2.setText("Quantity");
+        label1.setText("Customer name");
+        label2.setText("Customer surname");
+        label3.setText("Phone");
         label1.setVisible(true);
         label2.setVisible(true);
+        label3.setVisible(true);
         field1.setVisible(true);
         field2.setVisible(true);
-        BookingPositionEntity bookingPositionEntity = ServiceList.bookingService.getBookingPosByComposite(id, id2);
-        field1.setText(String.valueOf(bookingPositionEntity.getConsignmentId()));
-        field2.setText(String.valueOf(bookingPositionEntity.getQuantity()));
+        field3.setVisible(true);
         field1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field1);
+                if(field1.getText().length()>0) {
+                    if (field1.getText().length() > 20) {
+                        String s = field1.getText().substring(0, 20);
+                        field1.setText(s);
+                    }
+                    if (!Validator.nameConstraint(field1.getText())) {
+                        String s = field1.getText().substring(0, field1.getText().length() - 1);
+                        field1.setText(s);
+                    }
+                }
             }
         });
         field2.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.lengthConstraint(field2, 3);
-                Validator.numberConstraint(field2);
+                if (field2.getText().length() > 0) {
+                    if (field2.getText().length() > 20) {
+                        String s = field2.getText().substring(0, 20);
+                        field2.setText(s);
+                    }
+
+                    if (!Validator.nameConstraint(field2.getText())) {
+                        if(field2.getText().length()>0) {
+                            String s = field2.getText().substring(0, field2.getText().length() - 1);
+                            field2.setText(s);
+                        }
+                    }
+                }
+            }
+
+        });
+        field3.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                Validator.lengthConstraint(field3,13);
+                Validator.phoneConstraint(field3);
+            }
+        });
+        BookingEntity bookingEntity = ServiceList.bookingService.selectById(id);
+        field1.setText(bookingEntity.getCustomerByCustomerId().getName());
+        field2.setText(bookingEntity.getCustomerByCustomerId().getSurname());
+        field3.setText(bookingEntity.getCustomerByCustomerId().getPhone());
+    }
+    public void bookingPositionFill() {
+        label1.setText("Consignment");
+        label3.setText("Quantity");
+        consignmentLabel.setVisible(true);
+        consignmentChooseButton.setVisible(true);
+        label1.setVisible(true);
+        label3.setVisible(true);
+        field3.setVisible(true);
+        BookingPositionEntity bookingPositionEntity = ServiceList.bookingService.getBookingPosByComposite(id, id2);
+        consID=bookingPositionEntity.getConsignmentId();
+        consignmentLabel.setText(ServiceList.consignmentService.selectById(consID).getCdByCdId().getAlbum()+";  "+ServiceList.consignmentService.selectById(consID).getProviderByOrganizationId().getOrganizationByOrganizationId().getNameOfOrganization());
+        field3.setText(String.valueOf(bookingPositionEntity.getQuantity()));
+        field3.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                Validator.lengthConstraint(field3,3);
+                Validator.numberConstraint(field3);
             }
         });
     }
     public void cdFill(){
         label1.setText("Album");
         label2.setText("Genre");
-        label3.setText("Artist ID");
-        label4.setText("Music Label ID");
+        label3.setText("Artist");
+        label5.setText("Music Label");
+        artistLabel.setVisible(true);
+        artistChooseButton.setVisible(true);
+        musicLabel.setVisible(true);
+        labelChooseButton.setVisible(true);
+        /*label3.setText("Artist ID");
+        label4.setText("Music Label ID");*/
         label1.setVisible(true);
         label2.setVisible(true);
         label3.setVisible(true);
-        label4.setVisible(true);
+        label5.setVisible(true);
+        /*label3.setVisible(true);
+        label4.setVisible(true);*/
         field1.setVisible(true);
         //field2.setVisible(true);
         genre.getItems().addAll(FXCollections.observableArrayList("Blues","Jazz","Country","Chanson","Electronic music","Rock","Pop","Rap/Hip-hop"));
         genre.setVisible(true);
-        field3.setVisible(true);
-        field4.setVisible(true);
-        CdEntity cdEntity=ServiceList.cdService.selectById(id);
-        genre.setValue(cdEntity.getGenre());
-        field1.setText(cdEntity.getAlbum());
-//        field2.setText(cdEntity.getGenre());
-        field3.setText(String.valueOf(cdEntity.getArtistId()));
-        field4.setText(String.valueOf(cdEntity.getOrganizationId()));
+        /*field3.setVisible(true);
+        field4.setVisible(true);*/
+
         field1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
                 Validator.lengthConstraint(field1,20);
             }
-        });
-        /*field2.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.lengthConstraint(field2,15);
-            }
-        });*/
-        field3.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field3);
-            }
-        });
-        field4.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field4);
-            }
-        });
+        });        CdEntity cdEntity=ServiceList.cdService.selectById(id);
+        genre.setValue(cdEntity.getGenre());
+        field1.setText(cdEntity.getAlbum());
+//        field2.setText(cdEntity.getGenre());
+        artID=cdEntity.getArtistId();
+        ArtistEntity art=ServiceList.artistService.selectById(artID);
+        artistLabel.setText(art.getName()+", "+art.getNumberOfAlbums()+" albums");
+
+        labelID=cdEntity.getOrganizationId();
+        MusicLabelEntity mus=ServiceList.organizationsService.selectByIdML(labelID);
+        musicLabel.setText(mus.getOrganizationByOrganizationId().getNameOfOrganization()+", "+mus.getOrganizationByOrganizationId().getMail());
+
     }
     public void consignmentFill(){
         label1.setText("Quantity");
-        label2.setText("CD ID");
-        label3.setText("Provider ID");
-        label4.setText("Price");
+        label3.setText("CD");
+        label5.setText("Provider");
+        label2.setText("Price");
+        providerLabel.setVisible(true);
+        providerChooseButton.setVisible(true);
+        cdLabel.setVisible(true);
+        cdChooseButton.setVisible(true);
         label1.setVisible(true);
         label2.setVisible(true);
         label3.setVisible(true);
-        label4.setVisible(true);
+        label5.setVisible(true);
         field1.setVisible(true);
         field2.setVisible(true);
-        field3.setVisible(true);
-        field4.setVisible(true);
-        ConsignmentEntity consignmentEntity=ServiceList.consignmentService.selectById(id);
-        field1.setText(String.valueOf(consignmentEntity.getQuantity()));
-        field2.setText(String.valueOf(consignmentEntity.getCdId()));
-        field3.setText(String.valueOf(consignmentEntity.getOrganizationId()));
-        field4.setText(String.valueOf(consignmentEntity.getPrice()));
+        /*field3.setVisible(true);
+        field4.setVisible(true);*/
         field1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -264,30 +332,27 @@ public class EditController implements Initializable {
         field2.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field2);
+                Validator.numberConstraint(field2);
+                Validator.lengthConstraint(field2,5);
             }
-        });
-        field3.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field3);
-            }
-        });
-        field4.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.numberConstraint(field4);
-                Validator.lengthConstraint(field4,5);
-            }
-        });
+        });        ConsignmentEntity consignmentEntity=ServiceList.consignmentService.selectById(id);
+        field1.setText(String.valueOf(consignmentEntity.getQuantity()));
+        field2.setText(String.valueOf(consignmentEntity.getPrice()));
+        cdID=consignmentEntity.getCdId();
+        prID=consignmentEntity.getOrganizationId();
+        CdEntity cd=ServiceList.cdService.selectById(cdID);
+        cdLabel.setText(cd.getAlbum()+", "+cd.getArtistByArtistId().getName());
+        ProviderEntity prov=ServiceList.organizationsService.selectByIdPr(prID);
+        providerLabel.setText(prov.getOrganizationByOrganizationId().getNameOfOrganization()+", "+prov.getOrganizationByOrganizationId().getMail());
     }
+
     public void customerFill(){
         label1.setText("Name");
         label2.setText("LName");
         label3.setText("Phone");
         label4.setText("E-mail");
         label5.setText("Age");
-        label6.setText("Location Id");
+        label6.setText("Location");
         label1.setVisible(true);
         label2.setVisible(true);
         label3.setVisible(true);
@@ -299,14 +364,22 @@ public class EditController implements Initializable {
         field3.setVisible(true);
         field4.setVisible(true);
         field5.setVisible(true);
-        field6.setVisible(true);
+        locationLabel.setVisible(true);
+        locationChooseButton.setVisible(true);
+        locationLabel.setLayoutY(330);
+        locationChooseButton.setLayoutY(363);
+        //field6.setVisible(true);
         CustomerEntity customerEntity=ServiceList.customerService.selectById(id);
         field1.setText(customerEntity.getName());
         field2.setText(customerEntity.getSurname());
         field3.setText(customerEntity.getPhone());
         field4.setText(customerEntity.getMail());
         field5.setText(String.valueOf(customerEntity.getAge()));
-        field6.setText(String.valueOf(customerEntity.getLocationId()));
+        //field6.setText(String.valueOf(customerEntity.getLocationId()));
+        locID=customerEntity.getLocationId();
+        LocationEntity loc=ServiceList.locationService.selectById(locID);
+        locationLabel.setText(loc.getCountry()+", "+loc.getCity()+", "+loc.getStreet()+", "+loc.getHouse());
+
         field1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -363,12 +436,7 @@ public class EditController implements Initializable {
                 Validator.lengthConstraint(field5,3);
             }
         });
-        field6.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field6);
-            }
-        });
+
     }
     public void locationFill(){
         label1.setText("Country");
@@ -434,28 +502,64 @@ public class EditController implements Initializable {
         });
     }
     public void musicLabelFill(){
-        label1.setText("Organization_ID");
-        label2.setText("Studio amount");
+        label1.setText("Name");
+        label2.setText("Phone");
+        label3.setText("E-mail");
+        label4.setText("Studio amount");
         label1.setVisible(true);
         label2.setVisible(true);
+        label3.setVisible(true);
         field1.setVisible(true);
         field2.setVisible(true);
-        MusicLabelEntity musicLabelEntity=ServiceList.organizationsService.selectByIdML(id);
-        field1.setText(String.valueOf(musicLabelEntity.getOrganizationId()));
-        field2.setText(String.valueOf(musicLabelEntity.getStudioAmount()));
+        field3.setVisible(true);
+        label4.setVisible(true);
+        field4.setVisible(true);
         field1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field1);
+                if (field1.getText().length() > 0) {
+                    if (field1.getText().length() > 30) {
+                        String s = field1.getText().substring(0, 30);
+                        field1.setText(s);
+                    }
+
+                    if (!Validator.nameConstraint(field1.getText())) {
+                        String s = field1.getText().substring(0, field1.getText().length() - 1);
+                        field1.setText(s);
+                    }
+                }
             }
+
         });
         field2.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.numberConstraint(field2);
-                Validator.lengthConstraint(field2,3);
+                Validator.lengthConstraint(field2,13);
+                Validator.phoneConstraint(field2);
             }
         });
+        field3.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                Validator.lengthConstraint(field3,32);
+                if(field3.getText().length()>0&&Validator.validationMailString.indexOf(field3.getText().charAt(field3.getText().length()-1))==-1){
+                    String s = field3.getText().substring(0,field3.getText().length() - 1);
+                    field3.setText(s);
+                }
+            }
+        });
+        field4.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                Validator.numberConstraint(field4);
+                Validator.lengthConstraint(field4,3);
+            }
+        });
+        MusicLabelEntity musicLabelEntity=ServiceList.organizationsService.selectByIdML(id);
+        field1.setText(musicLabelEntity.getOrganizationByOrganizationId().getNameOfOrganization());
+        field2.setText(musicLabelEntity.getOrganizationByOrganizationId().getPhone());
+        field3.setText(musicLabelEntity.getOrganizationByOrganizationId().getMail());
+        field4.setText(String.valueOf(musicLabelEntity.getStudioAmount()));
     }
     public void organizationFill(){
         label1.setText("Name");
@@ -507,57 +611,90 @@ public class EditController implements Initializable {
         });
     }
     public void providerFill(){
-        label1.setText("Organization_ID");
-        label2.setText("Location ID");
-        label3.setText("ITN");
+        label1.setText("Name");
+        label2.setText("Phone");
+        label3.setText("E-mail");
+        label4.setText("ITN");
+        label5.setText("Location");
         label1.setVisible(true);
         label2.setVisible(true);
         label3.setVisible(true);
+        label4.setVisible(true);
+        label5.setVisible(true);
         field1.setVisible(true);
         field2.setVisible(true);
         field3.setVisible(true);
-        ProviderEntity providerEntity=ServiceList.organizationsService.selectByIdPr(id);
-        field1.setText(String.valueOf(providerEntity.getOrganizationId()));
-        field2.setText(String.valueOf(providerEntity.getLocationId()));
-        field3.setText(providerEntity.getItn());
+        field4.setVisible(true);
+        locationLabel.setVisible(true);
+        locationChooseButton.setVisible(true);
+        locationLabel.setLayoutY(283);
+        locationChooseButton.setLayoutY(316);
         field1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field1);
+                if (field1.getText().length() > 0) {
+                    if (field1.getText().length() > 30) {
+                        String s = field1.getText().substring(0, 30);
+                        field1.setText(s);
+                    }
+
+                    if (!Validator.nameConstraint(field1.getText())) {
+                        String s = field1.getText().substring(0, field1.getText().length() - 1);
+                        field1.setText(s);
+                    }
+                }
             }
+
         });
         field2.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field2);
+                Validator.lengthConstraint(field2,13);
+                Validator.phoneConstraint(field2);
             }
         });
         field3.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.lengthConstraint(field3,12);
-                Validator.numberConstraint(field3);
+                Validator.lengthConstraint(field3,32);
+                if(field3.getText().length()>0&&Validator.validationMailString.indexOf(field3.getText().charAt(field3.getText().length()-1))==-1){
+                    String s = field3.getText().substring(0,field3.getText().length() - 1);
+                    field3.setText(s);
+                }
             }
         });
+        field4.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                Validator.lengthConstraint(field4,12);
+                Validator.numberConstraint(field4);
+            }
+        });
+        ProviderEntity providerEntity=ServiceList.organizationsService.selectByIdPr(id);
+        field1.setText(providerEntity.getOrganizationByOrganizationId().getNameOfOrganization());
+        field2.setText(providerEntity.getOrganizationByOrganizationId().getPhone());
+        field3.setText(providerEntity.getOrganizationByOrganizationId().getMail());
+        field4.setText(providerEntity.getItn());
+        locID=providerEntity.getLocationId();
+        LocationEntity loc=ServiceList.locationService.selectById(locID);
+        locationLabel.setText(loc.getCountry()+", "+loc.getCity()+", "+loc.getStreet()+", "+loc.getHouse());
+
     }
     public void supplyFill(){
         label1.setText("Total price");
         label2.setText("Quantity");
-        label3.setText("Provider ID");
-        label4.setText("CD ID");
+        label5.setText("Provider");
+        label3.setText("CD");
         label1.setVisible(true);
         label2.setVisible(true);
         label3.setVisible(true);
-        label4.setVisible(true);
+        label5.setVisible(true);
         field1.setVisible(true);
         field2.setVisible(true);
-        field3.setVisible(true);
-        field4.setVisible(true);
-        SupplyEntity supplyEntity=ServiceList.supplyService.selectById(id);
-        field1.setText(String.valueOf(supplyEntity.getTotalPrice()));
-        field2.setText(String.valueOf(supplyEntity.getQuantity()));
-        field3.setText(String.valueOf(supplyEntity.getOrganizationId()));
-        field4.setText(String.valueOf(supplyEntity.getCdId()));
+        providerLabel.setVisible(true);
+        providerChooseButton.setVisible(true);
+        cdLabel.setVisible(true);
+        cdChooseButton.setVisible(true);
         field1.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
@@ -572,18 +709,16 @@ public class EditController implements Initializable {
                 Validator.numberConstraint(field2);
             }
         });
-        field3.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field3);
-            }
-        });
-        field4.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
-                Validator.idConstraint(field4);
-            }
-        });
+        SupplyEntity supplyEntity=ServiceList.supplyService.selectById(id);
+        field1.setText(String.valueOf(supplyEntity.getTotalPrice()));
+        field2.setText(String.valueOf(supplyEntity.getQuantity()));
+        prID=supplyEntity.getOrganizationId();
+        cdID=supplyEntity.getCdId();
+        CdEntity cd=ServiceList.cdService.selectById(cdID);
+        cdLabel.setText(cd.getAlbum()+", "+cd.getArtistByArtistId().getName());
+        ProviderEntity prov=ServiceList.organizationsService.selectByIdPr(prID);
+        providerLabel.setText(prov.getOrganizationByOrganizationId().getNameOfOrganization()+", "+prov.getOrganizationByOrganizationId().getMail());
+
     }
     public void userFill(){
         label1.setText("Login");
@@ -620,54 +755,66 @@ public class EditController implements Initializable {
         });
     }
     public void commitAdd(ActionEvent e){
+        String regmode="";
         try {
             if (mode != null) {
                 switch (mode) {
                     case ("Artist"):
                         ArtistEntity entity = ServiceList.artistService.selectById(id);
-                        if (field1.getText().length() < 2)
-                            throw new Exception("Name should contain at least 2 symbols");
-                        if (field2.getText().length() == 0) throw new Exception("Number of albums should be non-empty");
+                        if(field1.getText().length()<2) throw new Exception("Name should contain at least 2 symbols");
+                        if(field2.getText().length()==0) throw new Exception("Number of albums should be non-empty");
                         entity.setName(field1.getText());
                         entity.setNumberOfAlbums(Integer.parseInt(field2.getText()));
                         ServiceList.artistService.update(entity);
                         break;
                     case ("Booking"):
                         BookingEntity bookingEntity = ServiceList.bookingService.selectById(id);
-                        if(field1.getText().length()==0) throw new Exception("Customer ID should be non-empty");
-                        bookingEntity.setCustomerId(Integer.parseInt(field1.getText()));
-                        ServiceList.bookingService.update(bookingEntity);
+                        if(field1.getText().length()<1) throw new Exception("Name can't be null");
+                        if(field2.getText().length()<1) throw new Exception("LName can't be null");
+                        if(field3.getText().length()<11) throw new Exception("Phone number should contain from 11 to 13 symbols in international format");
+                        bookingEntity.setDate(new Date(System.currentTimeMillis()));
+                        int customer =ServiceList.customerService.selectByName(field1.getText(),field2.getText(),field3.getText());
+                        if(customer!=-1) {
+                            bookingEntity.setCustomerId(customer);
+                            ServiceList.bookingService.update(bookingEntity);
+                        }
+                        else{
+                            regmode="Customer";
+                            throw new Exception("Customer is absent, register new one");
+                        }
                         break;
                     case ("Booking Position"):
                         BookingPositionEntity bookingPositionEntity = ServiceList.bookingService.getBookingPosByComposite(id, id2);
-                        if(field2.getText().length()==0) throw new Exception("Quantity can't be null");
-                        if(field1.getText().length()==0) throw new Exception("Consignment  ID should be non-empty");
-                        bookingPositionEntity.setConsignmentId(Integer.parseInt(field1.getText()));
-                        bookingPositionEntity.setQuantity(Integer.parseInt(field2.getText()));
+                        if(field3.getText().length()==0) throw new Exception("Quantity can't be null");
+                        if(consID==0) throw new Exception("Consignment should be non-empty");
+                        //bookingPositionEntity.setBookingId(Integer.parseInt(field1.getText()));
+                        bookingPositionEntity.setBookingId(id);
+                        bookingPositionEntity.setConsignmentId(consID);
+                        bookingPositionEntity.setQuantity(Integer.parseInt(field3.getText()));
                         ServiceList.bookingService.updatePosition(bookingPositionEntity);
                         break;
                     case ("CD"):
                         CdEntity cdEntity = ServiceList.cdService.selectById(id);
                         if(field1.getText().length()<2) throw new Exception("Name of album should contain at least 2 symbols");
                         if(genre.getSelectionModel().getSelectedItem()==null) throw new Exception("Choose genre");
-                        if(field3.getText().length()==0) throw new Exception("Artist Id should contain al least 1 symbol");
-                        if(field4.getText().length()==0) throw new Exception("Music Label ID should contain at least 1 symbol");
+                        if(artID==0) throw new Exception("Artist can't be null");
+                        if(labelID==0) throw new Exception("Music Label can't be null");
                         cdEntity.setAlbum(field1.getText());
                         cdEntity.setGenre(genre.getValue());
-                        cdEntity.setArtistId(Integer.parseInt(field3.getText()));
-                        cdEntity.setOrganizationId(Integer.parseInt(field4.getText()));
+                        cdEntity.setArtistId(artID);
+                        cdEntity.setOrganizationId(labelID);
                         ServiceList.cdService.update(cdEntity);
                         break;
                     case ("Consignment"):
                         ConsignmentEntity consignmentEntity = ServiceList.consignmentService.selectById(id);
                         if(field1.getText().length()<1) throw new Exception("Quantity can't be null");
-                        if(field2.getText().length()==0) throw new Exception("CD Id should contain al least 1 symbol");
-                        if(field3.getText().length()==0) throw new Exception("Provider ID should contain at least 1 symbol");
-                        if(field4.getText().length()<1) throw new Exception("Price can't be null");
+                        if(cdID==0) throw new Exception("CD can't be null");
+                        if(prID==0) throw new Exception("Provider can't be null");
+                        if(field2.getText().length()<1) throw new Exception("Price can't be null");
                         consignmentEntity.setQuantity(Integer.parseInt(field1.getText()));
-                        consignmentEntity.setCdId(Integer.parseInt(field2.getText()));
-                        consignmentEntity.setOrganizationId(Integer.parseInt(field3.getText()));
-                        consignmentEntity.setPrice(Integer.parseInt(field4.getText()));
+                        consignmentEntity.setCdId(cdID);
+                        consignmentEntity.setOrganizationId(prID);
+                        consignmentEntity.setPrice(Integer.parseInt(field2.getText()));
                         ServiceList.consignmentService.update(consignmentEntity);
                         break;
                     case ("Customer"):
@@ -677,13 +824,13 @@ public class EditController implements Initializable {
                         if(field3.getText().length()<11) throw new Exception("Phone number should contain from 11 to 13 symbols in international format");
                         if(field4.getText().length()<9) throw new Exception("EMail should contain at least 9 symbols");
                         if(field5.getText().length()==0) throw new Exception("Age can't be null");
-                        if(field6.getText().length()==0) throw new Exception("Location ID can't be null");
+                        if(locID==0) throw new Exception("Location can't be null");
                         customerEntity.setName(field1.getText());
                         customerEntity.setSurname(field2.getText());
                         customerEntity.setPhone(field3.getText());
                         customerEntity.setMail(field4.getText());
                         customerEntity.setAge(Integer.parseInt(field5.getText()));
-                        customerEntity.setLocationId(Integer.parseInt(field6.getText()));
+                        customerEntity.setLocationId(locID);
                         ServiceList.customerService.update(customerEntity);
                         break;
                     case ("Location"):
@@ -700,7 +847,7 @@ public class EditController implements Initializable {
                         locationEntity.setPostCode(Integer.parseInt(field5.getText()));
                         ServiceList.locationService.update(locationEntity);
                         break;
-                    case ("Organizations"):
+                   /* case ("Organizations"):
                         OrganizationEntity organizationEntity = ServiceList.organizationsService.selectById(id);
                         if(field1.getText().length()<2) throw new Exception("Name of organization should contain at least 2 symbols");
                         if(field2.getText().length()<11) throw new Exception("Phone number should contain from 11 to 13 symbols in international format");
@@ -709,35 +856,50 @@ public class EditController implements Initializable {
                         organizationEntity.setPhone(field2.getText());
                         organizationEntity.setMail(field3.getText());
                         ServiceList.organizationsService.update(organizationEntity);
-                        break;
+                        break;*/
                     case ("Music Label"):
                         MusicLabelEntity musicLabelEntity = ServiceList.organizationsService.selectByIdML(id);
-                        if(field1.getText().length()<1) throw new Exception("Organization ID can't be null");
-                        if(field2.getText().length()<1) throw new Exception("Record studio amount can't be null");
-                        musicLabelEntity.setOrganizationId(Integer.parseInt(field1.getText()));
-                        musicLabelEntity.setStudioAmount(Integer.parseInt(field2.getText()));
+                        OrganizationEntity organizationEntity=ServiceList.organizationsService.selectById(musicLabelEntity.getOrganizationId());
+                        if(field1.getText().length()<2) throw new Exception("Name of organization should contain at least 2 symbols");
+                        if(field2.getText().length()<11) throw new Exception("Phone number should contain from 11 to 13 symbols in international format");
+                        if(field3.getText().length()<9) throw new Exception("EMail should contain at least 9 symbols");
+                        if(field4.getText().length()<1) throw new Exception("Record studio amount can't be null");
+                        organizationEntity.setNameOfOrganization(field1.getText());
+                        organizationEntity.setPhone(field2.getText());
+                        organizationEntity.setMail(field3.getText());
+                        ServiceList.organizationsService.update(organizationEntity);
+                        //musicLabelEntity.setOrganizationId(ServiceList.organizationsService.selectByFilter(organizationEntity.getNameOfOrganization(),organizationEntity.getPhone(),organizationEntity.getMail()));
+                        musicLabelEntity.setStudioAmount(Integer.parseInt(field4.getText()));
                         ServiceList.organizationsService.updateML(musicLabelEntity);
                         break;
                     case ("Provider"):
                         ProviderEntity providerEntity = ServiceList.organizationsService.selectByIdPr(id);
-                        if(field1.getText().length()<1) throw new Exception("Organization ID can't be null");
-                        if(field2.getText().length()<1) throw new Exception("Location ID can't be null");
-                        if(field3.getText().length()<10) throw new Exception("ITN should contain from 10 to 12 numbers");
-                        providerEntity.setOrganizationId(Integer.parseInt(field1.getText()));
-                        providerEntity.setLocationId(Integer.parseInt(field2.getText()));
-                        providerEntity.setItn(field3.getText());
+                        OrganizationEntity organizationEntity1=ServiceList.organizationsService.selectById(providerEntity.getOrganizationId());
+                        if(field1.getText().length()<2) throw new Exception("Name of organization should contain at least 2 symbols");
+                        if(field2.getText().length()<11) throw new Exception("Phone number should contain from 11 to 13 symbols in international format");
+                        if(field3.getText().length()<9) throw new Exception("EMail should contain at least 9 symbols");
+                        if(locID==0) throw new Exception("Location can't be null");
+                        if(field4.getText().length()<10) throw new Exception("ITN should contain from 10 to 12 numbers");
+                        organizationEntity1.setNameOfOrganization(field1.getText());
+                        organizationEntity1.setPhone(field2.getText());
+                        organizationEntity1.setMail(field3.getText());
+                        ServiceList.organizationsService.update(organizationEntity1);
+                        providerEntity.setOrganizationId(ServiceList.organizationsService.selectByFilter(organizationEntity1.getNameOfOrganization(),organizationEntity1.getPhone(),organizationEntity1.getMail()));
+                        providerEntity.setLocationId(locID);
+                        providerEntity.setItn(field4.getText());
                         ServiceList.organizationsService.updatePr(providerEntity);
                         break;
                     case ("Supply"):
                         SupplyEntity supplyEntity = ServiceList.supplyService.selectById(id);
                         if(field1.getText().length()<1)throw new Exception("Total Price can't be null");
                         if(field2.getText().length()<1) throw new Exception("Quantity can't be null");
-                        if(field3.getText().length()<1) throw new Exception("Provider ID can't be null");
-                        if(field4.getText().length()<1) throw new Exception("CD ID can't be null");
+                        if(prID==0) throw new Exception("Provider can't be null");
+                        if(cdID==0) throw new Exception("CD can't be null");
+                        supplyEntity.setDate(new Date(System.currentTimeMillis()));
                         supplyEntity.setTotalPrice(Double.parseDouble(field1.getText()));
                         supplyEntity.setQuantity(Integer.parseInt(field2.getText()));
-                        supplyEntity.setOrganizationId(Integer.parseInt(field3.getText()));
-                        supplyEntity.setCdId(Integer.parseInt(field4.getText()));
+                        supplyEntity.setOrganizationId(prID);
+                        supplyEntity.setCdId(cdID);
                         ServiceList.supplyService.update(supplyEntity);
                         break;
                     case ("User"):
@@ -758,10 +920,86 @@ public class EditController implements Initializable {
             alert.setHeaderText("Wrong data, try again");
             alert.setContentText(ex.getMessage());
             alert.showAndWait();
+            if(!regmode.equals("")){
+                register(regmode);
+            }
         }
+    }
+    public void register(String regmode){
+        String tempmode=mode;
+        try {
+            ModalWindow modal = new ModalWindow();
+            modal.newWindow("Adding", regmode, "");
+        } catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error");
+            alert.setHeaderText("Something goes wrong");
+            alert.setContentText("Check correctness of your choice");
+            alert.showAndWait();
+        }
+        mode=tempmode;
     }
     public void cancel(ActionEvent e){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
+    }
+    public void consignmentChoose(ActionEvent e){
+        try {
+            ChoiceWindow modal = new ChoiceWindow();
+            modal.newWindow("Consignment","Edit");
+            consignmentLabel.setText(ServiceList.consignmentService.selectById(consID).getCdByCdId().getAlbum()+";  "+ServiceList.consignmentService.selectById(consID).getProviderByOrganizationId().getOrganizationByOrganizationId().getNameOfOrganization());
+        } catch (Exception ex) {
+
+        }
+    }
+    public void locationChoose(ActionEvent e){
+        try {
+            ChoiceWindow modal = new ChoiceWindow();
+            modal.newWindow("Location","Edit");
+            LocationEntity loc=ServiceList.locationService.selectById(locID);
+            locationLabel.setText(loc.getCountry()+", "+loc.getCity()+", "+loc.getStreet()+", "+loc.getHouse());
+        } catch (Exception ex) {
+
+        }
+    }
+    public void artistChoose(ActionEvent e){
+        try {
+            ChoiceWindow modal = new ChoiceWindow();
+            modal.newWindow("Artist","Edit");
+            ArtistEntity art=ServiceList.artistService.selectById(artID);
+            artistLabel.setText(art.getName()+", "+art.getNumberOfAlbums()+" albums");
+        } catch (Exception ex) {
+
+        }
+    }
+    public void labelChoose(ActionEvent e){
+        try {
+            ChoiceWindow modal = new ChoiceWindow();
+            modal.newWindow("Music Label","Edit");
+            MusicLabelEntity mus=ServiceList.organizationsService.selectByIdML(labelID);
+            musicLabel.setText(mus.getOrganizationByOrganizationId().getNameOfOrganization()+", "+mus.getOrganizationByOrganizationId().getMail());
+        } catch (Exception ex) {
+
+        }
+    }
+    public void cdChoose(ActionEvent e){
+        try {
+            ChoiceWindow modal = new ChoiceWindow();
+            modal.newWindow("CD","Edit");
+            CdEntity cd=ServiceList.cdService.selectById(cdID);
+            cdLabel.setText(cd.getAlbum()+", "+cd.getArtistByArtistId().getName());
+        } catch (Exception ex) {
+
+        }
+    }
+    public void providerChoose(ActionEvent e){
+        try {
+            ChoiceWindow modal = new ChoiceWindow();
+            modal.newWindow("Provider","Edit");
+            ProviderEntity prov=ServiceList.organizationsService.selectByIdPr(prID);
+            providerLabel.setText(prov.getOrganizationByOrganizationId().getNameOfOrganization()+", "+prov.getOrganizationByOrganizationId().getMail());
+        } catch (Exception ex) {
+
+        }
     }
 }

@@ -19,12 +19,12 @@ public class ChoiceWindow {
         ChoosingController.mode=mode;
         ChoosingController.calledBy=calledBy;
         String fxmlFile = "/fxml/choosing.fxml";
-        FXMLLoader loader = new FXMLLoader();
+        //FXMLLoader loader = new FXMLLoader();
         try {
             Parent root1=FXMLLoader.<Parent>load(getClass().getResource(fxmlFile));
             Stage window=new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
-            Pane root=new Pane();
+            //Pane root=new Pane();
             Scene scene= new Scene(root1);
             window.setScene(scene);
             window.setTitle("Choosing of "+ mode);

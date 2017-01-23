@@ -217,7 +217,8 @@ public class ChoosingController implements Initializable {
                         cancel();
                     }
                     else{
-
+                        EditController.artID=artistTable.getSelectionModel().getSelectedItem().getArtistId();
+                        cancel();
                     }
                 }
                 break;
@@ -228,7 +229,8 @@ public class ChoosingController implements Initializable {
                         cancel();
                     }
                     else{
-
+                        EditController.cdID=cdTable.getSelectionModel().getSelectedItem().getCdId();
+                        cancel();
                     }
                 }
                 break;
@@ -239,7 +241,8 @@ public class ChoosingController implements Initializable {
                         cancel();
                     }
                     else{
-
+                        EditController.consID=consignmentTable.getSelectionModel().getSelectedItem().getConsignmentId();
+                        cancel();
                     }
                 }
                 break;
@@ -250,7 +253,8 @@ public class ChoosingController implements Initializable {
                         cancel();
                     }
                     else{
-
+                        EditController.locID=locationTable.getSelectionModel().getSelectedItem().getLocationId();
+                        cancel();
                     }
                 }
                 break;
@@ -261,7 +265,8 @@ public class ChoosingController implements Initializable {
                         cancel();
                     }
                     else{
-
+                        EditController.labelID=labelTable.getSelectionModel().getSelectedItem().getOrganizationId();
+                        cancel();
                     }
                 }
                 break;
@@ -272,7 +277,8 @@ public class ChoosingController implements Initializable {
                         cancel();
                     }
                     else{
-
+                        EditController.prID=providerTable.getSelectionModel().getSelectedItem().getOrganizationId();
+                        cancel();
                     }
                 }
                 break;
