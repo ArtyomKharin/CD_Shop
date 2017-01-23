@@ -6,11 +6,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import net.gui.ModalWindow;
 import net.gui.models.*;
 import net.gui.services.ServiceList;
 
@@ -282,6 +284,68 @@ public class ChoosingController implements Initializable {
                     }
                 }
                 break;
+        }
+    }
+    public void refreshAll(){
+        if(mode!=null){
+            switch (mode){
+                case ("Artist"):
+                    refreshArtist();
+                    break;
+                case ("CD"):
+                    refreshCd();
+                    break;
+                case ("Consignment"):
+                    refreshConsignment();
+                    break;
+                case ("Location"):
+                    refreshLocation();
+                    break;
+                case ("Music Label"):
+                    refreshLabel();
+                    break;
+                case ("Provider"):
+                    refreshProvider();
+                    break;
+                default: break;
+            }
+        }
+    }
+    public void addRecord(ActionEvent e) {
+        if (mode != null) {
+            try {
+                ModalWindow modal = new ModalWindow();
+                modal.newWindow("Adding", mode, "");
+            } catch (Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Error");
+                alert.setHeaderText("Try again");
+                alert.setContentText("Check correctness of your choice");
+                alert.showAndWait();
+            }
+            finally {
+                switch (mode){
+                    case ("Artist"):
+                        refreshArtist();
+                        break;
+                    case ("CD"):
+                        refreshCd();
+                        break;
+                    case ("Consignment"):
+                        refreshConsignment();
+                        break;
+                    case ("Location"):
+                        refreshLocation();
+                        break;
+                    case ("Music Label"):
+                        refreshLabel();
+                        break;
+                    case ("Provider"):
+                        refreshProvider();
+                        break;
+                }
+                refreshAll();
+            }
         }
     }
     public void cancel(){

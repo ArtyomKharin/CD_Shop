@@ -908,6 +908,7 @@ public class AddingController implements Initializable {
         stage.close();
     }
     public void consignmentChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Consignment","Add");
@@ -916,8 +917,12 @@ public class AddingController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void locationChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Location","Add");
@@ -926,8 +931,12 @@ public class AddingController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void artistChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Artist","Add");
@@ -936,8 +945,12 @@ public class AddingController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void labelChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Music Label","Add");
@@ -946,8 +959,12 @@ public class AddingController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void cdChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("CD","Add");
@@ -956,8 +973,12 @@ public class AddingController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void providerChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Provider","Add");
@@ -965,6 +986,9 @@ public class AddingController implements Initializable {
             providerLabel.setText(prov.getOrganizationByOrganizationId().getNameOfOrganization()+", "+prov.getOrganizationByOrganizationId().getMail());
         } catch (Exception ex) {
 
+        }
+        finally {
+            mode=tempmode;
         }
     }
 }

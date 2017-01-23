@@ -944,15 +944,21 @@ public class EditController implements Initializable {
         stage.close();
     }
     public void consignmentChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Consignment","Edit");
-            consignmentLabel.setText(ServiceList.consignmentService.selectById(consID).getCdByCdId().getAlbum()+";  "+ServiceList.consignmentService.selectById(consID).getProviderByOrganizationId().getOrganizationByOrganizationId().getNameOfOrganization());
+            ConsignmentEntity cons=ServiceList.consignmentService.selectById(consID);
+            consignmentLabel.setText(cons.getCdByCdId().getAlbum()+";  "+cons.getProviderByOrganizationId().getOrganizationByOrganizationId().getNameOfOrganization());
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void locationChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Location","Edit");
@@ -961,8 +967,12 @@ public class EditController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void artistChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Artist","Edit");
@@ -971,8 +981,12 @@ public class EditController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void labelChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Music Label","Edit");
@@ -981,8 +995,12 @@ public class EditController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void cdChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("CD","Edit");
@@ -991,8 +1009,12 @@ public class EditController implements Initializable {
         } catch (Exception ex) {
 
         }
+        finally {
+            mode=tempmode;
+        }
     }
     public void providerChoose(ActionEvent e){
+        String tempmode=mode;
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Provider","Edit");
@@ -1000,6 +1022,9 @@ public class EditController implements Initializable {
             providerLabel.setText(prov.getOrganizationByOrganizationId().getNameOfOrganization()+", "+prov.getOrganizationByOrganizationId().getMail());
         } catch (Exception ex) {
 
+        }
+        finally {
+            mode=tempmode;
         }
     }
 }
