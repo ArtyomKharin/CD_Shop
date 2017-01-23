@@ -278,7 +278,7 @@ public class AddingController implements Initializable {
         label4.setVisible(true);*/
         field1.setVisible(true);
         //field2.setVisible(true);
-        genre.getItems().addAll(FXCollections.observableArrayList("Blues","Jazz","Country","Chanson","Electronic music","Rock","Pop","Rap/Hip-hop"));
+        genre.getItems().addAll(FXCollections.observableArrayList("Blues","Jazz","Country","Chanson","Electronic","Rock","Pop","Rap/Hip-hop"));
         genre.setVisible(true);
         /*field3.setVisible(true);
         field4.setVisible(true);*/
@@ -911,7 +911,8 @@ public class AddingController implements Initializable {
         try {
             ChoiceWindow modal = new ChoiceWindow();
             modal.newWindow("Consignment","Add");
-            consignmentLabel.setText(ServiceList.consignmentService.selectById(consID).getCdByCdId().getAlbum()+";  "+ServiceList.consignmentService.selectById(consID).getProviderByOrganizationId().getOrganizationByOrganizationId().getNameOfOrganization());
+            ConsignmentEntity cons=ServiceList.consignmentService.selectById(consID);
+            consignmentLabel.setText(cons.getCdByCdId().getAlbum()+";  "+cons.getProviderByOrganizationId().getOrganizationByOrganizationId().getNameOfOrganization());
         } catch (Exception ex) {
 
         }

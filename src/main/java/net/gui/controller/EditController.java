@@ -282,7 +282,7 @@ public class EditController implements Initializable {
         label4.setVisible(true);*/
         field1.setVisible(true);
         //field2.setVisible(true);
-        genre.getItems().addAll(FXCollections.observableArrayList("Blues","Jazz","Country","Chanson","Electronic music","Rock","Pop","Rap/Hip-hop"));
+        genre.getItems().addAll(FXCollections.observableArrayList("Blues","Jazz","Country","Chanson","Electronic","Rock","Pop","Rap/Hip-hop"));
         genre.setVisible(true);
         /*field3.setVisible(true);
         field4.setVisible(true);*/
